@@ -11,6 +11,7 @@ char *progname;
 int main(int argc, char **argv)
 {
     int err;
+    graph_stats stats;
     graph g1, g2;
 
     progname = *argv;
@@ -24,11 +25,31 @@ int main(int argc, char **argv)
     if (err == -1)
         fail(strerror(errno), 1);
 
-    dump_graph(&g1);
-    dump_graph(&g2);
+    stats = is_isomorphic(&g1, &g2);
+    switch (stats) {
+    case VERTICES_UEQ:
+        fprintf(stderr, "unequal number of vertices\n");
+        break;
+    case EDGES_UEQ:
+        fprintf(stderr, "unequal number of edges\n");
+        break;
+    case DEGREES_UEQ:
+        fprintf(stderr, "unequal distribution of degree values\n");
+        break;
+    case PIECES_UEQ:
+        fprintf(stderr, "unequal number of graph pieces\n");
+        break;
+    case UNEQUAL:
+        fprintf(stderr, "unequal after detailed analysis\n");
+        break;
+    case ISOMORPHIC:
+        fprintf(stderr, "isomorphic\n");
+        break;
+    }
 
     free(g1.edges);
     free(g2.edges);
+
     return 0;
 }
 
@@ -82,4 +103,16 @@ void dump_graph(graph *graph)
     for (i = 0; i < graph->num_edges; i++)
         fprintf(stderr, "edge %lu: %lu-%lu\n", i,
                 graph->edges[i].vert1, graph->edges[i].vert2);
+}
+
+graph_stats is_isomorphic(graph *g1, graph *g2)
+{
+    if (g1->vertices != g2->vertices)
+        return VERTICES_UEQ;
+    if (g1->num_edges != g2->num_edges)
+        return EDGES_UEQ;
+
+    /* FIXME: cover degrees, graph pieces, and detailed analysis */
+
+    return ISOMORPHIC;
 }

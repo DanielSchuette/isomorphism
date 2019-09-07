@@ -19,7 +19,17 @@ typedef struct {
     edge *edges;
 } graph;
 
+typedef enum {
+    VERTICES_UEQ,   /* unequal number of vertices */
+    EDGES_UEQ,      /* unequal number of edges */
+    DEGREES_UEQ,    /* unequal distribution of vertex degree values */
+    PIECES_UEQ,     /* unequal number of pieces */
+    UNEQUAL,        /* unequal after detailed analysis */
+    ISOMORPHIC,     /* isomorphic graphs */
+} graph_stats;
+
 int read_graph_file(char *, graph *);
 void dump_graph(graph *);
+graph_stats is_isomorphic(graph *, graph *);
 
 #endif /* _ISOMORPHISM_H_ */
