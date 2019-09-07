@@ -69,10 +69,10 @@ int read_graph_file(char *name, graph *graph)
 {
     int read;
     uint64_t idx, e1, e2;
-    FILE *f;
+    FILE *file;
 
-    f = fopen(name, "r");
-    if (!f)
+    file = fopen(name, "r");
+    if (!file)
         return -1;
 
     /*
@@ -84,7 +84,7 @@ int read_graph_file(char *name, graph *graph)
      * integer on the first row minus one.
      */
     idx = read = 0;
-    while (fscanf(f, "%lu %lu\n", &e1, &e2) == 2) {
+    while (fscanf(file, "%lu %lu\n", &e1, &e2) == 2) {
         if (idx == 0) {
             graph->vertices = e1;
             graph->num_edges = e2;
@@ -106,6 +106,7 @@ int read_graph_file(char *name, graph *graph)
         }
         idx++;
     };
+    fclose(file); /* ignoring errors here because file was read-only */
 
     /* ensure there aren't too few edges read */
     if ((idx-1) != graph->num_edges)
