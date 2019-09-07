@@ -1,29 +1,12 @@
+/* isomorphism.c: compare two graphs with each other. */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-
-#define fail(msg, code) {                                           \
-    fprintf(stderr, "%s (%d): %s.\n", progname, __LINE__, msg);     \
-    exit(code);                                                     \
-}
+#include "isomorphism.h"
 
 char *progname;
-
-typedef struct {
-    uint64_t vert1;
-    uint64_t vert2;
-} edge;
-
-typedef struct {
-    uint64_t vertices;
-    uint64_t num_edges;
-    edge *edges;
-} graph;
-
-int read_graph_file(char *, graph *);
-void dump_graph(graph *);
 
 int main(int argc, char **argv)
 {
