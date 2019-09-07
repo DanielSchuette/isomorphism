@@ -28,7 +28,9 @@ typedef enum {
     ISOMORPHIC,     /* isomorphic graphs */
 } graph_stats;
 
+void init_graph(graph *);
 int read_graph_file(char *, graph *);
+void free_graph(graph *);
 void dump_graph(graph *);
 graph_stats is_isomorphic(graph *, graph *);
 

@@ -18,6 +18,9 @@ int main(int argc, char **argv)
     if (argc != 3)
         fail("not enough arguments", 1);
 
+    init_graph(&g1);
+    init_graph(&g2);
+
     err = read_graph_file(argv[1], &g1);
     if (err == -1)
         fail(strerror(errno), 1);
@@ -47,10 +50,17 @@ int main(int argc, char **argv)
         break;
     }
 
-    free(g1.edges);
-    free(g2.edges);
+    free_graph(&g1);
+    free_graph(&g2);
 
     return 0;
+}
+
+void init_graph(graph *graph)
+{
+    graph->vertices = 0;
+    graph->num_edges = 0;
+    graph->edges = NULL;
 }
 
 int read_graph_file(char *name, graph *graph)
@@ -94,6 +104,11 @@ int read_graph_file(char *name, graph *graph)
         fail("too few edges specified", 1);
 
     return 0;
+}
+
+void free_graph(graph *graph)
+{
+    free(graph->edges);
 }
 
 void dump_graph(graph *graph)
